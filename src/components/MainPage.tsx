@@ -30,63 +30,102 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800 py-10">
-      {/* Header Section with Username */}
-      <div className="w-full flex justify-end px-8 mb-4">
-        <div 
-          className="flex items-center space-x-2 cursor-pointer text-gray-700 dark:text-gray-200" 
-          onClick={() => navigate('/user-settings')}
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-800">
+      {/* Left Sidebar Navigation */}
+      <nav className="flex flex-col items-center bg-white dark:bg-gray-900 w-20 p-4 space-y-8 border-r border-gray-300 dark:border-gray-700">
+        <button 
+          onClick={() => navigate('/')} 
+          className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl"
+          title="Home"
         >
-          <span className="font-semibold">{username}</span>
-          <span className="text-2xl">👤</span> {/* User icon */}
-        </div>
-      </div>
+          🏠
+        </button>
+        <button 
+          onClick={toggleNotifications} 
+          className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl"
+          title="Notifications"
+        >
+          🔔
+        </button>
+        <button 
+          onClick={() => navigate('/user-settings')}
+          className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl"
+          title="User Settings"
+        >
+          👤
+        </button>
+      </nav>
 
-      {/* Centered Logo Image */}
-      <div className="mb-10">
-        <img 
-          src="/logo.png" 
-          alt="Group embracing" 
-          className="h-48 w-48 object-cover mx-auto"
-        />
-      </div>
+      {/* Main Content Section */}
+      <div className="flex-grow flex flex-col items-center p-10 space-y-10 relative">
+        {/* Dark Mode Toggle in Top-Right Corner */}
+        <button 
+          onClick={toggleDarkMode}
+          className="absolute top-6 right-6 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl"
+          title="Toggle Dark Mode"
+        >
+          🌙
+        </button>
 
-      {/* Buttons Section */}
-      <div className="flex flex-col gap-6 w-80 mx-auto">
-        <div className="flex items-center">
-          <img src="/icon1.png" alt="Icon 1" className="w-10 h-10 mr-4" />
-          <button 
-            className="flex-grow p-6 bg-gray-200 dark:bg-gray-700 text-left text-lg rounded-3xl text-gray-700 dark:text-gray-200"
-            onClick={() => navigate('/talking-platform')}
-          >
-            Talk with people like you
-          </button>
+        {/* Header with Purpose */}
+        <header className="flex justify-between items-center w-full max-w-4xl mb-8">
+          <div className="text-3xl font-bold text-gray-700 dark:text-gray-200">Welcome to your mental health app</div>
+          <div className="flex items-center space-x-4 text-gray-700 dark:text-gray-200">
+            <span className="text-lg">Hello, {username}</span>
+            <span className="text-2xl">👤</span> {/* User icon */}
+          </div>
+        </header>
+
+        {/* Centered Logo with Description */}
+        <div className="text-center">
+          <img 
+            src="/logo.png" 
+            alt="Group embracing" 
+            className="h-64 w-64 object-cover mx-auto mb-4"
+          />
+          <p className="text-gray-600 dark:text-gray-400">Your Companion in Mental Well-being</p>
         </div>
-        
-        <div className="flex items-center">
-          <img src="/icon2.png" alt="Icon 2" className="w-10 h-10 mr-4" />
-          <button 
-            className="flex-grow p-6 bg-gray-200 dark:bg-gray-700 text-left text-lg rounded-3xl text-gray-700 dark:text-gray-200"
-            onClick={() => navigate('/personal-friend')}
-          >
-            Personal friend
-          </button>
-        </div>
-        
-        <div className="flex items-center">
-          <img src="/icon3.png" alt="Icon 3" className="w-10 h-10 mr-4" />
-          <button 
-            className="flex-grow p-6 bg-gray-200 dark:bg-gray-700 text-left text-lg rounded-3xl text-gray-700 dark:text-gray-200"
-            onClick={() => navigate('/help')}
-          >
-            Ask for help
-          </button>
-        </div>
+
+        {/* Main Action Buttons Section */}
+        <section className="w-full max-w-4xl grid grid-cols-3 gap-6">
+          <div className="flex flex-col items-center p-6 bg-gray-200 dark:bg-gray-700 rounded-xl hover:shadow-lg transition">
+            <img src="/icon1.png" alt="Icon 1" className="w-12 h-12 mb-2" />
+            <button 
+              className="text-lg font-semibold text-gray-700 dark:text-gray-200"
+              onClick={() => navigate('/talking-platform')}
+              title="Connect and talk with people who understand"
+            >
+              Talk with people like you
+            </button>
+          </div>
+
+          <div className="flex flex-col items-center p-6 bg-gray-200 dark:bg-gray-700 rounded-xl hover:shadow-lg transition">
+            <img src="/icon2.png" alt="Icon 2" className="w-12 h-12 mb-2" />
+            <button 
+              className="text-lg font-semibold text-gray-700 dark:text-gray-200"
+              onClick={() => navigate('/personal-friend')}
+              title="Find a personal friend to confide in"
+            >
+              Personal friend
+            </button>
+          </div>
+
+          <div className="flex flex-col items-center p-6 bg-gray-200 dark:bg-gray-700 rounded-xl hover:shadow-lg transition">
+            <img src="/icon3.png" alt="Icon 3" className="w-12 h-12 mb-2" />
+            <button 
+              className="text-lg font-semibold text-gray-700 dark:text-gray-200"
+              onClick={() => navigate('/help')}
+              title="Reach out for help and support"
+            >
+              Ask for help
+            </button>
+          </div>
+        </section>
       </div>
 
       {/* Notifications Box */}
       {showNotifications && (
-        <div className="absolute top-20 right-8 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg w-80 p-4 z-50">
+        <div className="absolute top-20 left-24 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg w-96 p-6 z-50">
           <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Notifications</h2>
           <ul className="space-y-3">
             <li className="text-gray-600 dark:text-gray-300">New message from John</li>
@@ -95,13 +134,6 @@ const MainPage: React.FC = () => {
           </ul>
         </div>
       )}
-
-      {/* Bottom Navigation Bar */}
-      <div className="flex justify-between w-full px-16 py-2 mt-auto bg-white dark:bg-gray-900 border-t border-gray-300 dark:border-gray-700">
-        <button onClick={() => navigate('/')} className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl">🏠</button> {/* Home button now navigates to login page */}
-        <button onClick={toggleNotifications} className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl">🔔</button>
-        <button onClick={toggleDarkMode} className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl">🌙</button>
-      </div>
     </div>
   );
 };
