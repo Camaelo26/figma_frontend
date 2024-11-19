@@ -64,7 +64,6 @@ const LoginPage: React.FC = () => {
       {/* Header Section */}
       <div className="text-center mb-10">
         <h1 className="text-5xl font-bold text-gray-800 mb-2">BE WITH</h1>
-        <p className="text-teal-600 text-lg font-semibold">Your Companion in Mental Well-being</p>
         {/* Use Lottie animation */}
         <div className="mx-auto mb-4">
           {animationData ? (
@@ -78,6 +77,7 @@ const LoginPage: React.FC = () => {
             <p>Loading animation...</p>
           )}
         </div>
+        <p className="text-teal-600 text-lg font-semibold">Your Companion in Mental Well-being</p>
         <p className="text-gray-600 text-lg">Never be alone. We’re here to listen and support.</p>
       </div>
 
