@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 const PersonalFriendPage: React.FC = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState<{ from: string; text: string }[]>([]); // Stores chat messages
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
+  // Load dark mode preference from localStorage on mount
   useEffect(() => {
     const darkModePreference = localStorage.getItem('darkMode') === 'true';
     setIsDarkMode(darkModePreference);
@@ -29,9 +31,55 @@ const PersonalFriendPage: React.FC = () => {
     setShowMenu(!showMenu);
   };
 
-  const handleSend = () => {
-    console.log(message); // For now, just log the message
-    setMessage(''); // Clear input after sending
+  // Send message to the chatbot API
+  const handleSend = async () => {
+    if (message.trim() === '') return; // Prevent sending empty messages
+
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username'); // Retrieve username from localStorage
+    if (!username) {
+      console.error("Username is missing");
+      alert("Username is missing. Please log in again.");
+      navigate('/');
+      return;
+    }
+    if (!token) {
+      alert('You need to log in first.');
+      navigate('/');
+      return;
+    }
+
+    if (!username) {
+      console.error("User name is missing");
+      alert("User name is missing. Please log in again.");
+      navigate('/');
+      return;
+    }
+
+    // Add user message to chat history
+    setChatMessages((prev) => [...prev, { from: 'user', text: message }]);
+    setMessage(''); // Clear input field
+
+    try {
+      const response = await fetch('http://localhost:3000/api/chatbot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ username, message }), // Include username in the request body
+      });
+      const data = await response.json();
+
+      if (response.ok && data.response) {
+        // Add chatbot response to chat history
+        setChatMessages((prev) => [...prev, { from: 'bot', text: data.response }]);
+      } else {
+        console.error('Error in chatbot response:', data.message);
+      }
+    } catch (error) {
+      console.error('Failed to send message:', error);
+    }
   };
 
   return (
@@ -56,12 +104,12 @@ const PersonalFriendPage: React.FC = () => {
           <div className="absolute top-12 left-4 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg w-48 p-2 z-50">
             <button
               onClick={() => {
-                navigate('/talking-platform');
+                navigate('/goals-tracker');
                 setShowMenu(false);
               }}
               className="block w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              Talking Platform
+              Goals Tracker
             </button>
             <button
               onClick={() => {
@@ -78,13 +126,20 @@ const PersonalFriendPage: React.FC = () => {
 
       {/* Chat Section */}
       <div className="flex-grow p-4 space-y-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
-        {/* Example message bubble */}
-        <div className="flex justify-start">
-          <div className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 p-3 rounded-lg max-w-xs">
-            How are you today?
+        {chatMessages.map((chat, index) => (
+          <div
+            key={index}
+            className={`flex ${chat.from === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div
+              className={`${
+                chat.from === 'user' ? 'bg-teal-500 text-white' : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+              } p-3 rounded-lg max-w-xs`}
+            >
+              {chat.text}
+            </div>
           </div>
-        </div>
-        {/* Add more messages here as needed */}
+        ))}
       </div>
 
       {/* Message Input Field */}

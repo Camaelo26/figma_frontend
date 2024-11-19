@@ -1,15 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Lottie from 'lottie-react'; // Import Lottie for web animations
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [animationData, setAnimationData] = useState<any | null>(null);
 
-  // Handle navigation to the main page
-  const handleSignIn = () => {
-    navigate('/main');
+  // Load the Lottie JSON animation from the public folder
+  useEffect(() => {
+    fetch(`${process.env.PUBLIC_URL}/logo_login.json`)
+      .then((res) => res.json())
+      .then((data) => setAnimationData(data))
+      .catch((error) => console.error('Error loading Lottie animation:', error));
+  }, []);
+
+  const handleSignIn = async () => {
+    setErrorMessage(null);
+    try {
+      const response = await fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        localStorage.setItem('userId', data.userId);
+        localStorage.setItem('token', data.token);
+        if (data.username) localStorage.setItem('username', data.username);
+        navigate('/main');
+      } else {
+        setErrorMessage(data.message || 'Login failed.');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setErrorMessage('An error occurred. Please try again later.');
+    }
   };
 
-  // Redirects to the respective login page URLs
   const handleSocialRedirect = (platform: string) => {
     let url = '';
     switch (platform) {
@@ -25,7 +56,7 @@ const LoginPage: React.FC = () => {
       default:
         break;
     }
-    window.open(url, '_blank'); // Opens the URL in a new tab
+    window.open(url, '_blank');
   };
 
   return (
@@ -34,50 +65,67 @@ const LoginPage: React.FC = () => {
       <div className="text-center mb-10">
         <h1 className="text-5xl font-bold text-gray-800 mb-2">BE WITH</h1>
         <p className="text-teal-600 text-lg font-semibold">Your Companion in Mental Well-being</p>
-        <img 
-          src="/logo.png" 
-          alt="Group embracing" 
-          className="mx-auto mb-4 h-64 w-64 object-cover" 
-        />
+        {/* Use Lottie animation */}
+        <div className="mx-auto mb-4">
+          {animationData ? (
+            <Lottie
+              animationData={animationData}
+              loop
+              autoplay
+              style={{ width: 310, height: 310 }} // Adjust the size of the logo here
+            />
+          ) : (
+            <p>Loading animation...</p>
+          )}
+        </div>
         <p className="text-gray-600 text-lg">Never be alone. We’re here to listen and support.</p>
       </div>
 
       {/* Input Fields and Button */}
       <div className="w-80">
-        <input 
-          type="text" 
-          placeholder="Username" 
-          className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-3xl focus:outline-none focus:border-teal-500" 
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-3xl focus:outline-none focus:border-teal-500"
         />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          className="w-full px-4 py-3 mb-6 border border-gray-300 rounded-3xl focus:outline-none focus:border-teal-500" 
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full px-4 py-3 mb-6 border border-gray-300 rounded-3xl focus:outline-none focus:border-teal-500"
         />
-        <button 
+        <button
           onClick={handleSignIn}
           className="w-full py-3 bg-teal-600 text-white rounded-3xl text-3xl font-semibold hover:bg-teal-700 transition"
         >
           SIGN IN
         </button>
 
+        {/* Error Message */}
+        {errorMessage && (
+          <p className="text-red-500 mt-4 text-center">{errorMessage}</p>
+        )}
+
         {/* Social Login Options */}
         <div className="my-6 space-y-3">
-          <button 
+          <button
             onClick={() => handleSocialRedirect('Google')}
             className="flex items-center justify-center w-full py-2 px-4 border border-gray-300 rounded-full hover:bg-gray-100 transition shadow-md"
           >
             <img src="/google.png" alt="Google" className="h-6 w-6 mr-3" />
             <span className="font-semibold text-gray-600">Sign in with Google</span>
           </button>
-          <button 
+          <button
             onClick={() => handleSocialRedirect('Facebook')}
             className="flex items-center justify-center w-full py-2 px-4 border border-blue-600 rounded-full hover:bg-blue-100 transition shadow-md"
           >
             <img src="/facebook.png" alt="Facebook" className="h-6 w-6 mr-3" />
             <span className="font-semibold text-blue-600">Sign in with Facebook</span>
           </button>
-          <button 
+          <button
             onClick={() => handleSocialRedirect('Twitter')}
             className="flex items-center justify-center w-full py-2 px-4 border border-blue-400 rounded-full hover:bg-blue-50 transition shadow-md"
           >

@@ -5,13 +5,31 @@ const CreateAccountPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState(''); // Message for success or error feedback
 
-  const handleCreateAccount = () => {
-    // Placeholder for account creation logic, e.g., API call
-    if (password === confirmPassword) {
-      console.log('Account Created:', { username, email });
-    } else {
-      alert('Passwords do not match');
+  const handleCreateAccount = async () => {
+    // Check if passwords match before making the API call
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('Account created successfully. Please log in.');
+      } else {
+        setMessage(data.message || 'Failed to create account');
+      }
+    } catch (error) {
+      console.error('Error creating account:', error);
+      setMessage('An error occurred. Please try again.');
     }
   };
 
@@ -56,6 +74,13 @@ const CreateAccountPage: React.FC = () => {
         >
           Sign Up
         </button>
+        
+        {/* Display Success/Error Message */}
+        {message && (
+          <p className={`mt-4 text-center ${message.includes('successfully') ? 'text-green-500' : 'text-red-500'}`}>
+            {message}
+          </p>
+        )}
       </div>
 
       {/* Link to Login Page */}
@@ -67,6 +92,6 @@ const CreateAccountPage: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default CreateAccountPage;

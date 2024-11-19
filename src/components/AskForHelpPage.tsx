@@ -45,12 +45,12 @@ const AskForHelpPage: React.FC = () => {
           <div className="absolute top-12 left-4 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg w-48 p-2 z-50">
             <button
               onClick={() => {
-                navigate('/talking-platform');
+                navigate('/goals-tracker');
                 setShowMenu(false);
               }}
               className="block w-full text-left px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              Talking Platform
+              Goal tracker
             </button>
             <button
               onClick={() => {
