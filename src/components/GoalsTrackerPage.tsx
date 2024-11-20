@@ -79,11 +79,11 @@ const GoalsTrackerPage: React.FC = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-
+  
       if (!response.ok) throw new Error('Failed to mark goal as complete');
-
-      const data = await response.json();
-
+  
+      await response.json(); // Removed unused variable `data`
+  
       // Update the goals state with the updated list
       setGoals((prevGoals) =>
         prevGoals.map((goal) =>
@@ -96,6 +96,7 @@ const GoalsTrackerPage: React.FC = () => {
       setIsCompleting(null); // Reset completing state
     }
   };
+  
 
   useEffect(() => {
     fetchGoals();
