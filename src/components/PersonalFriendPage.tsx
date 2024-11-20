@@ -146,7 +146,7 @@ const PersonalFriendPage: React.FC = () => {
       <div className="flex items-center p-4 bg-white dark:bg-gray-900 border-t border-gray-300 dark:border-gray-700">
         <input
           type="text"
-          placeholder="Type a message"
+          placeholder="How do you feel today my friend?"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className="flex-grow px-4 py-2 mr-4 bg-gray-200 dark:bg-gray-700 rounded-full outline-none text-gray-800 dark:text-gray-200"
