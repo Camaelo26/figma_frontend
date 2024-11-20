@@ -12,6 +12,7 @@ const GoalsTrackerPage: React.FC = () => {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [newGoal, setNewGoal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isCompleting, setIsCompleting] = useState<string | null>(null); // Track the goal being marked as complete
   const [showMenu, setShowMenu] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     return localStorage.getItem('darkMode') === 'true';
@@ -65,6 +66,34 @@ const GoalsTrackerPage: React.FC = () => {
       setNewGoal('');
     } catch (error) {
       console.error('Error adding goal:', error);
+    }
+  };
+
+  // Mark a goal as complete
+  const markGoalAsComplete = async (goalId: string) => {
+    setIsCompleting(goalId); // Track the goal being marked as complete
+    try {
+      const response = await fetch(`http://localhost:3000/api/goals/complete/${goalId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (!response.ok) throw new Error('Failed to mark goal as complete');
+
+      const data = await response.json();
+
+      // Update the goals state with the updated list
+      setGoals((prevGoals) =>
+        prevGoals.map((goal) =>
+          goal._id === goalId ? { ...goal, completed: true } : goal
+        )
+      );
+    } catch (error) {
+      console.error('Error marking goal as complete:', error);
+    } finally {
+      setIsCompleting(null); // Reset completing state
     }
   };
 
@@ -136,10 +165,11 @@ const GoalsTrackerPage: React.FC = () => {
                 </span>
                 {!goal.completed && (
                   <button
-                    onClick={() => console.log('Mark goal complete')} // Replace with completeGoal function
+                    onClick={() => markGoalAsComplete(goal._id)}
                     className="py-2 px-4 bg-green-500 dark:bg-green-700 text-white rounded-md hover:bg-green-600 dark:hover:bg-green-800 transition"
+                    disabled={isCompleting === goal._id}
                   >
-                    Complete
+                    {isCompleting === goal._id ? 'Completing...' : 'Complete'}
                   </button>
                 )}
               </li>
