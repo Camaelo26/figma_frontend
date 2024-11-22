@@ -147,7 +147,7 @@ const GoalsTrackerPage: React.FC = () => {
           />
           <button
             onClick={addGoal}
-            className="w-full py-2 bg-green-500 dark:bg-green-700 text-white rounded-md hover:bg-green-600 dark:hover:bg-green-800 transition"
+            className="w-full py-2 bg-gray-800 dark:bg-gray-800 text-white rounded-md hover:bg-gray-700 dark:hover:bg-gray-700 active:bg-gray-600 dark:active:bg-gray-600 transition"
           >
             Add Goal
           </button>
@@ -167,7 +167,7 @@ const GoalsTrackerPage: React.FC = () => {
                 {!goal.completed && (
                   <button
                     onClick={() => markGoalAsComplete(goal._id)}
-                    className="py-2 px-4 bg-green-500 dark:bg-green-700 text-white rounded-md hover:bg-green-600 dark:hover:bg-green-800 transition"
+                    className="py-2 px-4 bg-gray-800 dark:bg-gray-800 text-white rounded-md hover:bg-gray-700 dark:hover:bg-gray-700 active:bg-gray-600 dark:active:bg-gray-600 transition"
                     disabled={isCompleting === goal._id}
                   >
                     {isCompleting === goal._id ? 'Completing...' : 'Complete'}
