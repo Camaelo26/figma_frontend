@@ -18,17 +18,25 @@ const MainPage: React.FC = () => {
   useEffect(() => {
     const fetchAnimations = async () => {
       try {
-        const logoData = await fetch(`${process.env.PUBLIC_URL}/logo_main_login.json`).then(res => res.json());
-        const goalTrackerData = await fetch(`${process.env.PUBLIC_URL}/Goal_tracker.json`).then(res => res.json());
-        const personalFriendData = await fetch(`${process.env.PUBLIC_URL}/personal_friend.json`).then(res => res.json());
-        const helpData = await fetch(`${process.env.PUBLIC_URL}/Help.json`).then(res => res.json());
-        
+        const logoData = await fetch(`${process.env.PUBLIC_URL}/logo_main_login.json`).then((res) =>
+          res.json()
+        );
+        const goalTrackerData = await fetch(`${process.env.PUBLIC_URL}/Goal_tracker.json`).then((res) =>
+          res.json()
+        );
+        const personalFriendData = await fetch(`${process.env.PUBLIC_URL}/personal_friend.json`).then((res) =>
+          res.json()
+        );
+        const helpData = await fetch(`${process.env.PUBLIC_URL}/Help.json`).then((res) =>
+          res.json()
+        );
+
         setLogoAnimation(logoData);
         setGoalTrackerAnimation(goalTrackerData);
         setPersonalFriendAnimation(personalFriendData);
         setHelpAnimation(helpData);
       } catch (error) {
-        console.error("Error fetching animations:", error);
+        console.error('Error fetching animations:', error);
       }
     };
 
@@ -49,10 +57,10 @@ const MainPage: React.FC = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:3000/auth/profile', {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/profile`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -103,15 +111,15 @@ const MainPage: React.FC = () => {
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-800">
       {/* Left Sidebar Navigation */}
       <nav className="flex flex-col items-center bg-white dark:bg-gray-900 w-20 p-4 space-y-8 border-r border-gray-300 dark:border-gray-700">
-        <button 
-          onClick={() => navigate('/')} 
+        <button
+          onClick={() => navigate('/')}
           className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl"
           title="Home"
         >
           🏠
         </button>
-        <button 
-          onClick={toggleNotifications} 
+        <button
+          onClick={toggleNotifications}
           className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl"
           title="Notifications"
         >
@@ -122,7 +130,7 @@ const MainPage: React.FC = () => {
       {/* Main Content Section */}
       <div className="flex-grow flex flex-col items-center p-10 space-y-10 relative">
         {/* Dark Mode Toggle */}
-        <button 
+        <button
           onClick={toggleDarkMode}
           className="absolute top-6 right-6 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-400 text-3xl"
           title="Toggle Dark Mode"
@@ -135,7 +143,7 @@ const MainPage: React.FC = () => {
           <div className="text-3xl font-bold text-gray-700 dark:text-gray-200">Welcome to your mental health app</div>
           <div className="flex items-center space-x-4 text-gray-700 dark:text-gray-200">
             <span className="text-lg">
-              Hello, {isLoading ? "Loading..." : username || "Guest"}
+              Hello, {isLoading ? 'Loading...' : username || 'Guest'}
             </span>
             <span className="text-2xl">👤</span>
           </div>
@@ -159,7 +167,7 @@ const MainPage: React.FC = () => {
             ) : (
               <p>Loading...</p>
             )}
-            <button 
+            <button
               className="text-lg font-semibold text-gray-700 dark:text-gray-200"
               onClick={() => navigate('/goals-tracker')}
               title="Set and track your goals"
@@ -174,7 +182,7 @@ const MainPage: React.FC = () => {
             ) : (
               <p>Loading...</p>
             )}
-            <button 
+            <button
               className="text-lg font-semibold text-gray-700 dark:text-gray-200"
               onClick={() => navigate('/personal-friend')}
               title="Find a personal friend to confide in"
@@ -189,7 +197,7 @@ const MainPage: React.FC = () => {
             ) : (
               <p>Loading...</p>
             )}
-            <button 
+            <button
               className="text-lg font-semibold text-gray-700 dark:text-gray-200"
               onClick={() => navigate('/help')}
               title="Reach out for help and support"

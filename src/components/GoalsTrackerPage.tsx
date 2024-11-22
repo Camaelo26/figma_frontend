@@ -32,9 +32,9 @@ const GoalsTrackerPage: React.FC = () => {
   const fetchGoals = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/api/goals', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/goals`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
+      });      
       if (!response.ok) throw new Error('Failed to fetch goals');
       const data = await response.json();
       setGoals(data);
@@ -52,14 +52,14 @@ const GoalsTrackerPage: React.FC = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:3000/api/goals/add', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/goals/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({ title: newGoal }),
-      });
+      });      
       if (!response.ok) throw new Error('Failed to add goal');
       const data = await response.json();
       setGoals(data.goals);
@@ -73,13 +73,12 @@ const GoalsTrackerPage: React.FC = () => {
   const markGoalAsComplete = async (goalId: string) => {
     setIsCompleting(goalId); // Track the goal being marked as complete
     try {
-      const response = await fetch(`http://localhost:3000/api/goals/complete/${goalId}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/goals/complete/${goalId}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-      });
-  
+      });      
       if (!response.ok) throw new Error('Failed to mark goal as complete');
   
       await response.json(); // Removed unused variable `data`

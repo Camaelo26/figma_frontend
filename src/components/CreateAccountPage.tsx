@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 const CreateAccountPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ const CreateAccountPage: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/auth/signup', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),

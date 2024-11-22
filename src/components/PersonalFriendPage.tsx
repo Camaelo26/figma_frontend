@@ -61,14 +61,14 @@ const PersonalFriendPage: React.FC = () => {
     setMessage(''); // Clear input field
 
     try {
-      const response = await fetch('http://localhost:3000/api/chatbot', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/chatbot`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ username, message }), // Include username in the request body
-      });
+        body: JSON.stringify({ username, message }),
+      });      
       const data = await response.json();
 
       if (response.ok && data.response) {

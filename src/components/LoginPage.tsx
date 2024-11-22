@@ -19,20 +19,24 @@ const LoginPage: React.FC = () => {
 
   const handleSignIn = async () => {
     setErrorMessage(null);
+    console.log('Attempting to log in...'); // Log start
     try {
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+      console.log('Response:', response);
+  
       const data = await response.json();
-
+      console.log('Response data:', data);
+  
       if (response.ok && data.token) {
         localStorage.setItem('userId', data.userId);
         localStorage.setItem('token', data.token);
-        if (data.username) localStorage.setItem('username', data.username);
-        navigate('/main');
+        navigate('/main'); // Redirect to main page
       } else {
+        console.error('Error in response:', data.message);
         setErrorMessage(data.message || 'Login failed.');
       }
     } catch (error) {
@@ -40,6 +44,8 @@ const LoginPage: React.FC = () => {
       setErrorMessage('An error occurred. Please try again later.');
     }
   };
+  
+  
 
   const handleSocialRedirect = (platform: string) => {
     let url = '';
