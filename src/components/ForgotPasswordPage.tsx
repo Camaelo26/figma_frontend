@@ -5,7 +5,7 @@ const ForgotPasswordPage: React.FC = () => {
   const [message, setMessage] = useState('');
 
   const handleResetPassword = () => {
-    // Placeholder for password reset logic, e.g., API call
+    
     setMessage(`A password reset link has been sent to ${email}`);
   };
 

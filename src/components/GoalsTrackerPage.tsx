@@ -71,7 +71,7 @@ const GoalsTrackerPage: React.FC = () => {
 
   // Mark a goal as complete
   const markGoalAsComplete = async (goalId: string) => {
-    setIsCompleting(goalId); // Track the goal being marked as complete
+    setIsCompleting(goalId); 
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/goals/complete/${goalId}`, {
         method: 'PUT',
@@ -81,7 +81,7 @@ const GoalsTrackerPage: React.FC = () => {
       });      
       if (!response.ok) throw new Error('Failed to mark goal as complete');
   
-      await response.json(); // Removed unused variable `data`
+      await response.json(); 
   
       // Update the goals state with the updated list
       setGoals((prevGoals) =>

@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
 
   const handleSignIn = async () => {
     setErrorMessage(null);
-    console.log('Attempting to log in...'); // Log start
+    console.log('Attempting to log in...'); 
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
         method: 'POST',

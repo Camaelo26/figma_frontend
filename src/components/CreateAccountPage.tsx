@@ -6,7 +6,7 @@ const CreateAccountPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(''); // Message for success or error feedback
+  const [message, setMessage] = useState(''); 
 
   const handleCreateAccount = async () => {
     // Check if passwords match before making the API call
