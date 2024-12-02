@@ -91,9 +91,7 @@ const PersonalFriendPage: React.FC = () => {
         </button>
         <h1 className="text-xl font-semibold dark:text-white">Personal Friend</h1>
         <div className="flex items-center space-x-4">
-          <button>
-            <span className="text-2xl dark:text-white">🔍</span> {/* Search icon */}
-          </button>
+
           <button>
             <span className="text-2xl dark:text-white">👤</span> {/* Profile icon */}
           </button>
