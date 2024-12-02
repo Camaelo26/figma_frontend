@@ -88,7 +88,7 @@ const LoginPage: React.FC = () => {
       </div>
 
       {/* Input Fields and Button */}
-      <div className="w-80">
+      <div className="w-full max-w-md px-4 sm:px-6 md:w-96">
         <input
           type="email"
           placeholder="Email"
